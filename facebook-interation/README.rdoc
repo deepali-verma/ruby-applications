@@ -1,0 +1,66 @@
+
+Author - Deepali
+
+== Facebook API
+
+The application describes the authentication of user using Facebook API and sharing various details on Facebook account.
+
+== Description
+The application is developed using Ruby on Rails. The application fully describes how a user can be authorised using Facebook API (Sign In using Facebook account) and Shares the details entered on currently active facebook account.
+
+== Working URL
+Facebook API : http://ksfacebook.herokuapp.com/
+
+== Configuration required
+
+ Declare the APP_KEY and APP_SECRET key in the intializers.
+ 
+== Technical Description 
+
+* Declared following gems in the Gemfile at the client end.
+
+       gem 'omniauth'
+       gem 'omniauth-facebook'
+       gem 'pry'
+
+* Run bundle
+
+* Create a developer account on Facebook. Using this developer account create an application.
+
+* Create a file omniauth.rb in the initializers folder and write the following code in this file
+
+      Rails.application.config.middleware.use OmniAuth::Builder do
+        provider :facebook, 'APP_KEY', 'APP_SECRET', :scope => 'email', :display => 'touch', :secure_image_url=> true
+      end
+      
+      Here 
+     * APP_KEY : App key provided facebook developer account
+     * APP_SECRET : App secret key provided by facebook developer account
+
+* Create a user model using the following code and save various other details.
+
+    rails g model user provider uid name oauth_token oauth_expires_at:datetime
+
+* For authorization the request is as follows (apply on the "Sign in with Facebook button"):
+    call to '/auth/facebook'
+    
+* Create a callback URL using for facebook as the creation of seession the following code in routes.rb file.
+
+    match 'auth/:provider/callback', to: 'sessions#create' ,via: [:get, :post]
+    
+* In sessions controller create a user session with the data collected from the omniauth. 
+
+* Save the data in the users table.
+
+* A session is created using the user id obtained from the above.
+
+* If the authentication is failed the user will be redirected to the root url of the application (can be declared in the routes.rb file)
+
+* The user can enter various details in the form provided and can share those details using.
+     https://www.facebook.com/dialog/feed?app_id=APP_KEY with various other parameters
+   
+* The entered details are shared to the active facebook account.
+
+* The redirect url can be declared while making the request of sharing.
+
+* The session is destroyed after clicking on the Sign out link.

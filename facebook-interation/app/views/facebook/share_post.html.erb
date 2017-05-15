@@ -1,0 +1,48 @@
+<div class="col-md-6 col-md-offset-3">
+  <div class="page-header">
+    <h1>Share to Facebook</h1>
+  </div>
+
+  <div id="user_nav">
+		<% if current_user %>
+		    Signed in as <strong><%= current_user.name %></strong>!
+		    <%= link_to "Sign out", signout_path, id: "sign_out" %>
+		   <br/><br/>
+			  <div class="form-group"> 
+	      	<label>Text to be shared:</label>
+	      	<input type="text" class="form-control" placeholder="Text" id="commentlink" ></input>
+	    	</div>
+
+	     	<div class="form-group"> 
+	      	<label>Description to be shared:</label>
+	      	<input type="text" class="form-control" placeholder="Description" id="sayfb" ></input>
+	    	</div>
+
+		    <div class="form-group"> 
+		      <label>URL to be shared:</label>
+		      <input type="text" class="form-control" placeholder="URL" id="urllink" ></input>
+		    </div>
+
+		    <img id="image_fb" src="http://s3.amazonaws.com/sharemeisterimages/users/photos/000/001/290/original/images1.jpeg?1435747116"></img>
+
+		    <button class="btn btn-sm btn-primary" onclick="facebook('https://www.facebook.com/dialog/feed?app_id= 480884208788381')" style="float:right;margin: 50px 67% 7px 0;">Share on Facebook</button>
+
+		<% else %>
+			<button class="btn btn-primary"  id: "sign_in" onclick="window.location.href = '/auth/facebook'">Sign in with Facebook</button>
+		<% end %>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+function facebook(url){
+	var text=$("#commentlink").val();
+	var say=$("#sayfb").val();
+	var url1=$("#urllink").val();
+	var img_url=document.getElementById("image_fb").src;
+	var arg='&link='+url1+'&name='+say+'&picture='+img_url+'&caption='+text+'&description='+url1+'&redirect_uri=https://ksfacebook.herokuapp.com/facebook/close_facebook';
+	url=url+arg;
+	window.open(url, '', 'menubar=no,toolbar=no,resizable=yes,scrollbars=yes,height=500,width=900');return false;
+}
+               
+</script>
